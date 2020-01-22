@@ -24,9 +24,15 @@ public class InMemoryTimeEntryRepository implements TimeEntryRepository {
     }
 
     public TimeEntry update(long id, TimeEntry timeEntry) {
-        timeEntry.setId(id);
-        TimeEntry updatedTimeEntry = timeEntryMap.put(id, timeEntry);
-        return updatedTimeEntry;
+        TimeEntry timeEntryToUpdate = timeEntryMap.get(id);
+        if (timeEntryToUpdate != null) {
+            timeEntryToUpdate.setProjectId(timeEntry.getProjectId());
+            timeEntryToUpdate.setUserId(timeEntry.getUserId());
+            timeEntryToUpdate.setDate(timeEntry.getDate());
+            timeEntryToUpdate.setHours(timeEntry.getHours());
+            return timeEntryMap.put(id, timeEntryToUpdate);
+        }
+        return null;
     }
 
     public void delete(long id) {
